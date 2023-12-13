@@ -1,7 +1,12 @@
+using Domain;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ParsaDbContext>(options =>
+    options.UseLazyLoadingProxies().UseNpgsql(builder.Configuration.GetConnectionString("ParsaDbContext")));
 
 var app = builder.Build();
 
