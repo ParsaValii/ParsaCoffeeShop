@@ -9,6 +9,15 @@ namespace Domain
 {
     public class ParsaDbContext : DbContext
     {
+        public ParsaDbContext() {}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+            .UseLazyLoadingProxies()
+            .UseNpgsql(
+                "Server=localhost;Database=ParsaCoffeeShopDb;Port=5432;User Id=postgres;Password=postgres"
+            );
+        }
         public ParsaDbContext(DbContextOptions<ParsaDbContext> options) : base(options) {}
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Category> Categories { get; set; }
