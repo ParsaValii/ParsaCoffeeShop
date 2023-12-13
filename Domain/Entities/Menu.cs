@@ -17,10 +17,11 @@ namespace Domain.Entities
         public string Title { get; set; }
 
 
-        public virtual IList<category>? Categories { get; set; }
+        [Display(Name = "Categories")]
+        public virtual IList<Category>? Categories { get; set; }
         public Menu()
         {
-            Categories = new List<category>();
+            Categories = new List<Category>();
         }
     }
 }
