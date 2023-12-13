@@ -27,7 +27,7 @@
             </td>
             <td>
                 <a class="btn btn-sm btn-warning" onclick="EditMenu('@item.Id')">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a class="btn btn-sm btn-info" onclick="DetailsMenu('@item.Id')">Details</a>
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
@@ -70,12 +70,12 @@
                 $("#myModalBody").html(resultt);
             })
         }
-        function DetailsGroup(id)
+        function DetailsMenu(id)
         {
-            $.get("Groups/Details/"+id, function(result)
+            $.get("Menus/Details/"+id, function(result)
             {
                 $("#modelId").modal("show");
-                $("#mymodallable").html("Group Ditails");
+                $("#mymodallable").html("Menu Ditails");
                 $("#myModalBody").html(result);
             })
         }
