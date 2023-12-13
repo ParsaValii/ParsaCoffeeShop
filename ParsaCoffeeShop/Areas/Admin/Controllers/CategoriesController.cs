@@ -126,7 +126,7 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(category);
+            return PartialView(category);
         }
 
         // POST: Admin/Categories/Delete/5
