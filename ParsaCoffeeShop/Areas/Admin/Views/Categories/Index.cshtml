@@ -39,7 +39,7 @@
             </td>
             <td>
                 <a class="btn btn-sm btn-warning" onclick="EditCategory('@item.Id')">Edit</a>
-                <a class="btn btn-sm btn-info" onclick="DetailsGroup('@item.Id')">Details</a>
+                <a class="btn btn-sm btn-info" onclick="DetailsCategory('@item.Id')">Details</a>
                 <a class="btn btn-sm btn-danger" onclick="DeleteGroup('@item.Id')">Delete</a>
             </td>
         </tr>
@@ -80,12 +80,12 @@
                 $("#myModalBody").html(resultt);
             })
         }
-        function DetailsGroup(id)
+        function DetailsCategory(id)
         {
-            $.get("Groups/Details/"+id, function(result)
+            $.get("Categories/Details/"+id, function(result)
             {
                 $("#modelId").modal("show");
-                $("#mymodallable").html("Group Ditails");
+                $("#mymodallable").html("Category Ditails");
                 $("#myModalBody").html(result);
             })
         }

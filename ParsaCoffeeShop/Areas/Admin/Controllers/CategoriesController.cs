@@ -45,7 +45,7 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(category);
+            return PartialView(category);
         }
 
         // GET: Admin/Categories/Create
