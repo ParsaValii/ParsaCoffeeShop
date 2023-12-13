@@ -21,9 +21,11 @@ namespace Domain.Entities
         public string Image { get; set; }
 
 
+        [Display(Name = "Menu")]
         public virtual Menu Menu { get; set; }
 
 
+        [Display(Name = "Items")]
         public virtual IList<Item>? Items { get; set; }
         public Category()
         {
