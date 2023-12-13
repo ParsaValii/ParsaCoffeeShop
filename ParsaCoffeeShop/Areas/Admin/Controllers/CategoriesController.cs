@@ -7,37 +7,39 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Domain;
 using Domain.Entities;
+using Service.Interfaces;
+using Service.Services;
 
 namespace ParsaCoffeeShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class CategoriesController : Controller
     {
-        private readonly ParsaDbContext _context;
+        private readonly ParsaDbContext _context = new ParsaDbContext();
+        ICategoryService _categoryService;
+        IMenuService _menuService;
 
-        public CategoriesController(ParsaDbContext context)
+        public CategoriesController()
         {
-            _context = context;
+            _categoryService = new CategoryService(_context);
+            _menuService = new MenuService(_context);
         }
 
         // GET: Admin/Categories
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var parsaDbContext = _context.Categories.Include(c => c.Menu);
-            return View(await parsaDbContext.ToListAsync());
+            return View(_categoryService.GetAllCategories());
         }
 
         // GET: Admin/Categories/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .Include(c => c.Menu)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _categoryService.GetCategoryById(id.Value);
             if (category == null)
             {
                 return NotFound();
@@ -49,7 +51,7 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         // GET: Admin/Categories/Create
         public IActionResult Create()
         {
-            ViewData["MenuId"] = new SelectList(_context.Menus, "Id", "Title");
+            ViewData["MenuId"] = new SelectList(_menuService.GetAllMenus(), "Id", "Title");
             return View();
         }
 
@@ -63,28 +65,28 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 category.Id = Guid.NewGuid();
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+                await _categoryService.InsertCategory(category);
+                await _categoryService.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MenuId"] = new SelectList(_context.Menus, "Id", "Title", category.MenuId);
+            ViewData["MenuId"] = new SelectList(_menuService.GetAllMenus(), "Id", "Title", category.MenuId);
             return View(category);
         }
 
         // GET: Admin/Categories/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _categoryService.GetCategoryById(id.Value);
             if (category == null)
             {
                 return NotFound();
             }
-            ViewData["MenuId"] = new SelectList(_context.Menus, "Id", "Title", category.MenuId);
+            ViewData["MenuId"] = new SelectList(_menuService.GetAllMenus(), "Id", "Title", category.MenuId);
             return View(category);
         }
 
@@ -102,39 +104,23 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _categoryService.UpdateCategory(category);
+                await _categoryService.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MenuId"] = new SelectList(_context.Menus, "Id", "Title", category.MenuId);
+            ViewData["MenuId"] = new SelectList(_menuService.GetAllMenus(), "Id", "Title", category.MenuId);
             return View(category);
         }
 
         // GET: Admin/Categories/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .Include(c => c.Menu)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _categoryService.GetCategoryById(id.Value);
             if (category == null)
             {
                 return NotFound();
@@ -148,23 +134,14 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.Categories == null)
-            {
-                return Problem("Entity set 'ParsaDbContext.Categories'  is null.");
-            }
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _categoryService.GetCategoryById(id);
             if (category != null)
             {
-                _context.Categories.Remove(category);
+                _categoryService.DeleteCategory(category);
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool CategoryExists(Guid id)
-        {
-          return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
+            await _categoryService.Save();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
