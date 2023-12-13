@@ -120,7 +120,7 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(menu);
+            return PartialView(menu);
         }
 
         // POST: Admin/Menus/Delete/5
