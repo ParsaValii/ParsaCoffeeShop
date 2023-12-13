@@ -49,7 +49,7 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         // GET: Admin/Menus/Create
         public IActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         // POST: Admin/Menus/Create
