@@ -87,7 +87,7 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
                 return NotFound();
             }
             ViewData["MenuId"] = new SelectList(_menuService.GetAllMenus(), "Id", "Title", category.MenuId);
-            return View(category);
+            return PartialView(category);
         }
 
         // POST: Admin/Categories/Edit/5
