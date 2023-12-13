@@ -12,7 +12,7 @@ namespace Service.Services
 {
     public class MenuService : IMenuService
     {
-        ParsaDbContext _context;
+        private ParsaDbContext _context;
         public MenuService(ParsaDbContext context)
         {
             _context = context;
