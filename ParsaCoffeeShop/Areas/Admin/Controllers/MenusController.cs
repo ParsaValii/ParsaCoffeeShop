@@ -7,37 +7,37 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Domain;
 using Domain.Entities;
+using Service.Interfaces;
+using Service.Services;
 
 namespace ParsaCoffeeShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class MenusController : Controller
     {
-        private readonly ParsaDbContext _context;
+        private readonly ParsaDbContext _context = new ParsaDbContext();
+        private IMenuService _menuService;
 
-        public MenusController(ParsaDbContext context)
+        public MenusController()
         {
-            _context = context;
+            _menuService = new MenuService(_context);
         }
 
         // GET: Admin/Menus
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-              return _context.Menus != null ? 
-                          View(await _context.Menus.ToListAsync()) :
-                          Problem("Entity set 'ParsaDbContext.Menus'  is null.");
+            return View(_menuService.GetAllMenus());
         }
 
         // GET: Admin/Menus/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.Menus == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var menu = await _context.Menus
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var menu = await _menuService.GetMenuById(id.Value);
             if (menu == null)
             {
                 return NotFound();
@@ -62,8 +62,8 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 menu.Id = Guid.NewGuid();
-                _context.Add(menu);
-                await _context.SaveChangesAsync();
+                await _menuService.InsertMenu(menu);
+                await _menuService.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(menu);
@@ -72,12 +72,12 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         // GET: Admin/Menus/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.Menus == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var menu = await _context.Menus.FindAsync(id);
+            var menu = await _menuService.GetMenuById(id.Value);
             if (menu == null)
             {
                 return NotFound();
@@ -99,22 +99,8 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(menu);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MenuExists(menu.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _menuService.UpdateMenu(menu);
+                await _menuService.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(menu);
@@ -123,13 +109,12 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         // GET: Admin/Menus/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.Menus == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var menu = await _context.Menus
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var menu = await _menuService.GetMenuById(id.Value);
             if (menu == null)
             {
                 return NotFound();
@@ -143,23 +128,14 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.Menus == null)
-            {
-                return Problem("Entity set 'ParsaDbContext.Menus'  is null.");
-            }
-            var menu = await _context.Menus.FindAsync(id);
+            var menu = await _menuService.GetMenuById(id);
             if (menu != null)
             {
-                _context.Menus.Remove(menu);
+                _menuService.DeleteMenu(menu);
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool MenuExists(Guid id)
-        {
-          return (_context.Menus?.Any(e => e.Id == id)).GetValueOrDefault();
+            await _menuService.Save();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
