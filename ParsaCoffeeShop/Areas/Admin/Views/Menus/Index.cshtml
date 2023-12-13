@@ -26,7 +26,7 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a class="btn btn-sm btn-warning" onclick="EditMenu('@item.Id')">Edit</a>
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
@@ -61,12 +61,12 @@
                 $("#myModalBody").html(result);
             })
         });
-        function EditGroup(idd)
+        function EditMenu(idd)
         {
-            $.get("Groups/Edit/"+idd, function(resultt)
+            $.get("Menus/Edit/"+idd, function(resultt)
             {
                 $("#modelId").modal("show");
-                $("#mymodallable").html("EditGroup");
+                $("#mymodallable").html("Edit Menu");
                 $("#myModalBody").html(resultt);
             })
         }
