@@ -8,7 +8,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-sm btn-success" id="btnNewCategory">New Category</a>
 </p>
 <table class="table">
     <thead>
@@ -46,3 +46,57 @@
 }
     </tbody>
 </table>
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mymodallable">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="myModalBody">
+                
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/bootstrap-modal.js"></script>
+    <script>
+        $("#btnNewCategory").click(function(){
+            $.get("Categories/Create", function(result){
+                $("#modelId").modal("show");
+                $("#mymodallable").html("New Category");
+                $("#myModalBody").html(result);
+            })
+        });
+        function EditGroup(idd)
+        {
+            $.get("Groups/Edit/"+idd, function(resultt)
+            {
+                $("#modelId").modal("show");
+                $("#mymodallable").html("EditGroup");
+                $("#myModalBody").html(resultt);
+            })
+        }
+        function DetailsGroup(id)
+        {
+            $.get("Groups/Details/"+id, function(result)
+            {
+                $("#modelId").modal("show");
+                $("#mymodallable").html("Group Ditails");
+                $("#myModalBody").html(result);
+            })
+        }
+        function DeleteGroup(id)
+        {
+            $.get("Groups/Delete/"+id, function(result)
+            {
+                $("#modelId").modal("show");
+                $("#mymodallable").html("Delete Group");
+                $("#myModalBody").html(result);
+            })
+        }
+    </script>
+}

@@ -52,7 +52,7 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         public IActionResult Create()
         {
             ViewData["MenuId"] = new SelectList(_menuService.GetAllMenus(), "Id", "Title");
-            return View();
+            return PartialView();
         }
 
         // POST: Admin/Categories/Create
