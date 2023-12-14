@@ -7,37 +7,39 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Domain;
 using Domain.Entities;
+using Service.Interfaces;
+using Service.Services;
 
 namespace ParsaCoffeeShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ItemsController : Controller
     {
-        private readonly ParsaDbContext _context;
+        private readonly ParsaDbContext _context = new ParsaDbContext();
+        IItemService _itemService;
+        ICategoryService _categoryService;
 
-        public ItemsController(ParsaDbContext context)
+        public ItemsController()
         {
-            _context = context;
+            _itemService = new ItemService(_context);
+            _categoryService = new CategoryService(_context);
         }
 
         // GET: Admin/Items
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var parsaDbContext = _context.Items.Include(i => i.Category);
-            return View(await parsaDbContext.ToListAsync());
+            return View(_itemService.GetAllItems());
         }
 
         // GET: Admin/Items/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.Items == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var item = await _context.Items
-                .Include(i => i.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var item = await _itemService.GetItemById(id.Value);
             if (item == null)
             {
                 return NotFound();
@@ -49,7 +51,7 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         // GET: Admin/Items/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Image");
+            ViewData["CategoryId"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Title");
             return View();
         }
 
@@ -63,28 +65,28 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 item.Id = Guid.NewGuid();
-                _context.Add(item);
-                await _context.SaveChangesAsync();
+                await _itemService.InsertItem(item);
+                await _itemService.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Image", item.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Title", item.CategoryId);
             return View(item);
         }
 
         // GET: Admin/Items/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.Items == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var item = await _context.Items.FindAsync(id);
+            var item = await _itemService.GetItemById(id.Value);
             if (item == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Image", item.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Title", item.CategoryId);
             return View(item);
         }
 
@@ -102,39 +104,23 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(item);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ItemExists(item.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _itemService.UpdateItem(item);
+                await _itemService.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Image", item.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Title", item.CategoryId);
             return View(item);
         }
 
         // GET: Admin/Items/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.Items == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var item = await _context.Items
-                .Include(i => i.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var item = await _itemService.GetItemById(id.Value);
             if (item == null)
             {
                 return NotFound();
@@ -148,23 +134,9 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.Items == null)
-            {
-                return Problem("Entity set 'ParsaDbContext.Items'  is null.");
-            }
-            var item = await _context.Items.FindAsync(id);
-            if (item != null)
-            {
-                _context.Items.Remove(item);
-            }
-            
-            await _context.SaveChangesAsync();
+            await _itemService.DeleteItem(id);
+            await _itemService.Save();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ItemExists(Guid id)
-        {
-          return (_context.Items?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
