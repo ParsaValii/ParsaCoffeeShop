@@ -3,14 +3,9 @@
 @{
     ViewData["Title"] = "Delete";
 }
-<style>
-    body {
-    text-align: center;
-}
-</style>
 <h4>Are you sure you want to delete @Model.Title ?</h4>
 <div>
-    <dl class="row">
+    <dl class="row" style="text-align: center;" >
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
