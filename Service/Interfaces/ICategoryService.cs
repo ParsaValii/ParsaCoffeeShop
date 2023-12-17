@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
+using Domain.ViewModels;
 
 namespace Service.Interfaces
 {
@@ -15,5 +16,7 @@ namespace Service.Interfaces
         bool DeleteCategory(Category category);
         Task<bool> DeleteCategory(Guid id);
         Task Save();
+
+        IEnumerable<ShowMenuViewModel> GetMenuForView();
     }
 }

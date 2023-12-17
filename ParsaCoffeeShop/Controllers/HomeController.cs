@@ -1,21 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain;
+using Microsoft.AspNetCore.Mvc;
 using ParsaCoffeeShop.Models;
+using Service.Interfaces;
+using Service.Services;
 using System.Diagnostics;
 
 namespace ParsaCoffeeShop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ParsaDbContext _context = new ParsaDbContext();
+        ICategoryService _categoryService;
+        public HomeController()
         {
-            _logger = logger;
+            _categoryService = new CategoryService(_context);
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(_categoryService.GetMenuForView());
         }
 
         public IActionResult Privacy()
