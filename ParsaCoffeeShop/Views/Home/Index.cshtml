@@ -29,33 +29,30 @@
                         </div>
                     </div>
                     <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
-                        <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
+                        <h3>Welcome to Marna Restaurant !</h3>
                         <p class="fst-italic">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore
-                            magna aliqua.
+                            In Marna, every dish tells a story. From the moment of ingredient selection to the time of
+                            serving, every detail is crafted with meticulous care to bring freshness and culinary
+                            delight to your table. As a team, we believe that with respect for raw materials and the art
+                            of cooking, each dish can provide an enjoyable experience.
                         </p>
                         <ul>
                             <li>
-                                <i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat.
+                                <i class="bi bi-check-circle"></i> UPleasant Ambiance, Eliciting Emotions
                             </li>
                             <li>
-                                <i class="bi bi-check-circle"></i> Duis aute irure dolor in reprehenderit in voluptate
-                                velit.
+                                <i class="bi bi-check-circle"></i> Expert Team, Quality Service
                             </li>
                             <li>
-                                <i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda
-                                mastiro dolore eu fugiat nulla pariatur.
+                                <i class="bi bi-check-circle"></i> Your Special Occasions, Our Priority
                             </li>
                         </ul>
                         <p>
-                            Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate
-                            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                            proident, sunt in
-                            culpa qui officia deserunt mollit anim id est laborum
+                            We look forward to welcoming you to Marna Restaurant. For reservations or inquiries, feel
+                            free to contact us. Your satisfaction is our priority, and we are here to ensure your dining
+                            experience exceeds expectations.
+
+                            Thank you for choosing Marna — where culinary artistry meets warm hospitality.
                         </p>
                     </div>
                 </div>
@@ -74,34 +71,39 @@
                 <div class="row">
 
                     <div class="col-lg-4">
-                        <div class="box" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="box" data-aos="zoom-in" data-aos-delay="50">
                             <span>01</span>
-                            <h4>Lorem Ipsum</h4>
+                            <h4>Culinary Delights</h4>
                             <p>
-                                Ulamco laboris nisi ut aliquip ex ea commodo consequat. Et consectetur ducimus vero
-                                placeat
+                                At Marna, we take pride in crafting culinary experiences that go beyond the
+                                ordinary. Our chefs are passionate about creating dishes that not only satisfy the
+                                appetite but also leave a lasting impression on your taste buds. From the freshest
+                                ingredients to innovative recipes, every bite tells a story of flavor and quality.
                             </p>
                         </div>
                     </div>
 
                     <div class="col-lg-4 mt-4 mt-lg-0">
-                        <div class="box" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="box" data-aos="zoom-in" data-aos-delay="100">
                             <span>02</span>
-                            <h4>Repellat Nihil</h4>
+                            <h4>Ambiance & Hospitality</h4>
                             <p>
-                                Dolorem est fugiat occaecati voluptate velit esse. Dicta veritatis dolor quod et vel dire
-                                leno para dest
+                                Step into a world of warmth and hospitality at our restaurant. Our inviting ambiance,
+                                coupled with attentive service, creates the perfect setting for any occasion. Whether
+                                it's a cozy dinner for two or a celebration with friends and family, we ensure a
+                                memorable and delightful experience.
                             </p>
                         </div>
                     </div>
 
                     <div class="col-lg-4 mt-4 mt-lg-0">
-                        <div class="box" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="box" data-aos="zoom-in" data-aos-delay="150">
                             <span>03</span>
-                            <h4> Ad ad velit qui</h4>
+                            <h4>Unique Flavors, Diverse Menu</h4>
                             <p>
-                                Molestiae officiis omnis illo asperiores. Aut doloribus vitae sunt debitis quo vel nam
-                                quis
+                                Explore a diverse menu that showcases a fusion of flavors and culinary traditions. From
+                                classic favorites to unique signature dishes, our menu is designed to cater to various
+                                tastes. We are committed to providing a gastronomic journey that delights and surprises.
                             </p>
                         </div>
                     </div>
@@ -133,14 +135,14 @@
 
                 <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
 
-                    @foreach(var item in Model)
+                    @foreach (var item in Model)
                     {
-                        foreach(var itemm in item.Items)
+                        foreach (var itemm in item.Items)
                         {
                             <div class="col-lg-6 menu-item filter-@item.CategoryTitle">
                                 <img src="~/assets/img/menu/lobster-bisque.jpg" class="menu-img" alt="">
                                 <div class="menu-content">
-                                    <a href="#">@itemm.Title </a><span>@itemm.Price</span>
+                                    <a href="#">@itemm.Title </a><span>@itemm.Price $</span>
                                 </div>
                                 <div class="menu-ingredients">
                                     @itemm.Description
@@ -151,7 +153,8 @@
                 </div>
 
             </div>
-        </section><!-- End Menu Section ===================================================================================================================-->
+        </section>
+        <!-- End Menu Section ===================================================================================================================-->
         <!-- ======= Contact Section ======= -->
         <section id="contact" class="contact">
             <div class="container" data-aos="fade-up">
