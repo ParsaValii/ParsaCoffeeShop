@@ -13,7 +13,7 @@ namespace Domain
         public ParsaDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ParsaDbContext>();
-            optionsBuilder.UseLazyLoadingProxies().UseNpgsql("Server=localhost;Database=ParsaCoffeeShopDb;Port=5432;User Id=postgres;Password=postgres");
+            optionsBuilder.UseLazyLoadingProxies().UseSqlServer("Server=localhost;Database=Parsadb;Integrated Security=True;TrustServerCertificate=True;");
 
             return new ParsaDbContext(optionsBuilder.Options);
         }

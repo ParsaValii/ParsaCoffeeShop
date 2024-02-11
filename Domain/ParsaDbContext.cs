@@ -14,8 +14,8 @@ namespace Domain
         {
             optionsBuilder
             .UseLazyLoadingProxies()
-            .UseNpgsql(
-                "Server=localhost;Database=ParsaCoffeeShopDb;Port=5432;User Id=postgres;Password=postgres"
+            .UseSqlServer(
+                "Server=localhost;Database=Parsadb;Integrated Security=True;TrustServerCertificate=True;"
             );
         }
         public ParsaDbContext(DbContextOptions<ParsaDbContext> options) : base(options) {}
