@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using Domain.Entities;
-using Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Service.Interfaces;
@@ -94,16 +93,6 @@ namespace Service.Services
         public void Dispose()
         {
             _context.DisposeAsync();
-        }
-
-        public IEnumerable<ShowMenuViewModel> GetMenuForView()
-        {
-            return _context.Categories.Select(c => new ShowMenuViewModel()
-            {
-                CategoryId = c.Id,
-                CategoryTitle = c.Title,
-                Items = c.Items!.ToList()
-            });
         }
     }
 }

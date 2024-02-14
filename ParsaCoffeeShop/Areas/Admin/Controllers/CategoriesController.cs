@@ -17,12 +17,10 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
     {
         private readonly ParsaDbContext _context = new ParsaDbContext();
         ICategoryService _categoryService;
-        IMenuService _menuService;
 
         public CategoriesController()
         {
             _categoryService = new CategoryService(_context);
-            _menuService = new MenuService(_context);
         }
 
         // GET: Admin/Categories
@@ -51,7 +49,6 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         // GET: Admin/Categories/Create
         public IActionResult Create()
         {
-            ViewData["MenuId"] = new SelectList(_menuService.GetAllMenus(), "Id", "Title");
             return PartialView();
         }
 
@@ -60,7 +57,7 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MenuId,Title,Image")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Title,Image")] Category category)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +66,6 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
                 await _categoryService.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MenuId"] = new SelectList(_menuService.GetAllMenus(), "Id", "Title", category.MenuId);
             return View(category);
         }
 
@@ -86,7 +82,6 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["MenuId"] = new SelectList(_menuService.GetAllMenus(), "Id", "Title", category.MenuId);
             return PartialView(category);
         }
 
@@ -95,7 +90,7 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,MenuId,Title,Image")] Category category)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,Image")] Category category)
         {
             if (id != category.Id)
             {
@@ -108,7 +103,6 @@ namespace ParsaCoffeeShop.Areas.Admin.Controllers
                 await _categoryService.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MenuId"] = new SelectList(_menuService.GetAllMenus(), "Id", "Title", category.MenuId);
             return View(category);
         }
 

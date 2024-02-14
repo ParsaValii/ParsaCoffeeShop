@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ParsaDbContext>(options =>
     options.UseLazyLoadingProxies().UseNpgsql(builder.Configuration.GetConnectionString("ParsaDbContext")));
-builder.Services.AddScoped<IMenuService, MenuService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

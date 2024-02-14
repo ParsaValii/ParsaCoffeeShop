@@ -18,7 +18,7 @@ namespace ParsaCoffeeShop.Controllers
 
         public IActionResult Index()
         {
-            return View(_categoryService.GetMenuForView());
+            return View(_categoryService.GetAllCategories());
         }
 
         public IActionResult Privacy()

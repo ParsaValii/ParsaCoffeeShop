@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Domain.ViewModels.ShowMenuViewModel>
+﻿@model IEnumerable<Domain.Entities.Category>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -127,7 +127,7 @@
                             <li data-filter="*" class="filter-active">All</li>
                             @foreach (var item in Model)
                             {
-                                <li data-filter=".filter-@item.CategoryTitle">@item.CategoryTitle</li>
+                                <li data-filter=".filter-@item.Title">@item.Title</li>
                             }
                         </ul>
                     </div>
@@ -135,11 +135,12 @@
 
                 <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
 
-                    @foreach (var item in Model)
+
+                    @foreach(var item in Model)
                     {
-                        foreach (var itemm in item.Items)
+                        foreach(var itemm in item.Items)
                         {
-                            <div class="col-lg-6 menu-item filter-@item.CategoryTitle">
+                            <div class="col-lg-6 menu-item filter-@item.Title">
                                 <img src="~/assets/img/menu/lobster-bisque.jpg" class="menu-img" alt="">
                                 <div class="menu-content">
                                     <a href="#">@itemm.Title </a><span>@itemm.Price $</span>

@@ -19,9 +19,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Image)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Menu)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -33,9 +30,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Menu.Title)
             </td>
             <td>
                 <a class="btn btn-sm btn-warning" onclick="EditCategory('@item.Id')">Edit</a>
